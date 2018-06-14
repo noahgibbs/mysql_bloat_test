@@ -57,19 +57,19 @@ x = []
 10_000.times do |i|
   r = x[i%10] = statement.execute(100_000)
   #r = x[i%10] = statement.execute(100_000, :as => :array)
-  #r.clear
+  r.free
 end
 
-puts "RSS/limits after allocating 10k 100,000 byte strings in mysql2 (with no #clear or equivalent)"
+puts "RSS/limits after allocating 10k 100,000 byte strings in mysql2 (with .free)"
 malloc_limits
 process_rss
 
-#10_000.times do |i|
-#  #x[i%10] = conn.exec(sql, [100_000])
-#  x[i%10] = statement.execute(100_000)
-#  #x[i%10] = statement.execute(100_000, :as => :array)
-#end
-#
-#puts "RSS/limits after allocating 10k 100,000 byte strings in libpq (and NOT clearing)"
-#malloc_limits
-#process_rss
+10_000.times do |i|
+  #x[i%10] = conn.exec(sql, [100_000])
+  x[i%10] = statement.execute(100_000)
+  #x[i%10] = statement.execute(100_000, :as => :array)
+end
+
+puts "RSS/limits after allocating 10k 100,000 byte strings in mysql2 (with NO .free)"
+malloc_limits
+process_rss
